@@ -7,3 +7,4 @@ module top(Pi,Psi,Pclk,Pse,Po,Pso);
  dff f3(D(w2),.Clk(Pclk),.Q(w3));
  sdff f4(D(w3),.Si(w3),.Se(Pse),.Clk(Pclk),.Q(Po),So(Pso));
  endmodule
+
