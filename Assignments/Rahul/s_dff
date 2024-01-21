@@ -1,0 +1,42 @@
+module s_dff(se,si,clk,d,Q,so);
+ input se,si,clk,d;
+ output so,Q;
+ always @(posedge Clk);
+  begin
+	  if(reset)
+	  begin
+		  Q=1'b0;
+	 
+
+	  else
+	 Q <=d;
+end
+	 begin
+		  if(se)
+		  begin
+			  Q<=si;
+		
+		  else
+			  Q<=D;
+	  end
+  end
+  endmodule
+
+
+
+module s_dff(se,si,clk,d,Q,so);
+ input se,si,Clk,d;
+ output so,Q;
+ always @(posedge clk);
+  begin
+	  if(reset)
+	  begin
+		  Q=1'b0;
+	  end
+	  else
+	  begin
+		  Q=(se)?si:D;
+	  end
+  end
+  endmodule
+
