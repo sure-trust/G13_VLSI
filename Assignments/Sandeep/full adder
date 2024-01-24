@@ -1,0 +1,17 @@
+module full_adder(a,b,cin,sum,carry);
+input a,b,cin;
+output sum,carry;
+assign sum = a^b^cin;
+assign carry = (a&b)|(b&cin)|(a&cin);
+endmodule
+
+module full_adder(A,B,Cin,Cout,Sum);
+input A,B,Cin;
+output Sum,Cout;
+wire w1,w2;
+Half_adder HA1(w1,w2,A,B);
+Half_adder HA2(Sum,w3,w1,cin);
+or g1(cout,w3,w2);
+endmodule
+
+

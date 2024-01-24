@@ -1,0 +1,7 @@
+module PBIDIR(PAD,Y,A,IE,OE);
+output Y;
+input A;
+input PAD;
+bufif1 g1(Y,PAD,IE);
+bufif1 g1(PAD,A,OE);
+endmodule
