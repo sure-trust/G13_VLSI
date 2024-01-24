@@ -1,14 +1,14 @@
-module memory_16X8(Clk,wen,In,Out,Addr);
+module sram_16X8(clk,wen,in,out,addr);
 input wen;
-input Clk;
-input [7:0] Addr;
+input clk;
+input [3:0] addr;
 input [7:0] In;
 output reg [7:0] Out;
 reg [7:0] mem [0:15];
 always @(posedge clk) begin
 if(wen)
-mem[Addr]<=In;
+	mem[addr]<=in;
 else
-	Out<=mem[Addr];
+	out<=mem[addr];
 	end
 	endmodule
