@@ -6,22 +6,20 @@
 
 
 <h3 align="center">SURE Trust - Skill Upgradation for Rural-youth Empowerment Trust</h3>
-  <h2>Course Name</h2>
+  <h2>VLSI Designing - (Front-End)</h2>
 </div>
 
 # Course Report
 
-## Name: [Your Name]
+## Name: GANESH ADUNURI 
 
-## Qualifications: [Your Qualifications]
+## Qualifications: Pursuing 4th year Btech
+Welcome to the course report for the VLSI Designing - (Front-End)! This README document provides an overview of the course, spram16x8 assignment submitted.
 
-Welcome to the course report for the [Course Name]! This README document provides an overview of the course, its mini projects and final project.
+### spram16x8 assignment 
 
-### Mini Projects and Final Project
-
-Below is a table summarizing the mini projects and final project completed during the course:
+Below is a table summarizing thespram16x8 completed during the course:
 
 | Description                               | Link                                    |
 |-------------------------------------------|-----------------------------------------|
-| Mini Projects: [Project Description]     | [Project Link]                         |
-| Final Project: [Project Description]     | [Project Link]                         |
+| assignment : [spram16x8 ]                 | [Click Here] (https://github.com/GANESHADUNURI/G13_VLSI/tree/main/Assignments/Ganesh%20Adnuri)|
