@@ -101,7 +101,8 @@ module tb;
   initial
     begin
       initialize();
-      repeat (3) begin
+      //repeat (5) begin
+        repeat (3) begin
             write_operation_port1($random, $random);
             write_operation_port2($random, $random);
         end
@@ -110,6 +111,8 @@ module tb;
             read_operation_port1($random);
             read_operation_port2($random);
         end
+      //end
+      
       $finish;
     end
 
@@ -121,4 +124,3 @@ module tb;
 end
     
 endmodule
-
