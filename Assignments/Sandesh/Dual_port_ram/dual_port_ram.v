@@ -1,30 +1,30 @@
-module dual_port_ram(Dout1,Dout2,Din1,Din2,clk1,clk2,Ad1,Ad2,we1,we2);
+module dual_port_ram(QA,QB,DA,DB,CLKA,CLKB,AA,AB,WENA,WENB);
   parameter Addr_Width = 4;
   parameter Data_Width = 8;
   
-  input clk1,clk2,we1,we2;
-  input [Addr_Width-1:0] Ad1,Ad2;
-  input [Data_Width-1:0] Din1,Din2;
-  output reg [Data_Width-1:0] Dout1,Dout2;
+  input CLKA,CLKB,WENA,WENB;
+  input [Addr_Width-1:0] AA,AB;
+  input [Data_Width-1:0] DA,DB;
+  output reg [Data_Width-1:0] QA,QB;
   
   parameter Width = 8;
   parameter Depth = 32;
   
   reg [Width-1:0] mem [Depth:0];
   
-  always @(posedge clk1)
+  always @(posedge CLKA)
     begin
-      if (we1)
-        mem[Ad1] <= Din1;
+      if (WENA)
+        mem[AA] <= DA;
       else
-        Dout1 <= mem[Ad1];
+        QA <= mem[AA];
     end
   
-  always @(posedge clk2)
+  always @(posedge CLKB)
     begin
-      if (we2)
-        mem[Ad2] <= Din2;
+      if (WENB)
+        mem[AB] <= DB;
       else
-        Dout2 <= mem[Ad2];
+        QB <= mem[AB];
     end
 endmodule
