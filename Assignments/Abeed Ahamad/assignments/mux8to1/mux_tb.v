@@ -1,0 +1,27 @@
+module mux_8_to_1(I,sel,Y);
+input [7:0]I;
+input [2:0]sel;
+wire Y;
+	mux inst(.sel(sel),.i(i),.Y(Y));
+   initial 
+     begin 
+        $monitor("sel=%d,i=%d,Y=%s",sel,i,Y,$time);
+     
+         sel=3'b000;
+  #1     sel=3'b001;
+  #1     sel=3'b010;
+  #1     sel=3'b011;
+  #1     sel=3'b100;
+  #1     sel=3'b101;
+  #1     sel=3'b110;
+  #1     sel=3'b111;
+      end 
+initial 
+  
+      begin 
+        
+        $dumpfile("dump.vcd");
+        $dumpvars();
+
+end
+endmodule
