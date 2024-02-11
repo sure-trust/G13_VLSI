@@ -1,0 +1,16 @@
+module spr_16x8 (CLK,D,A,WEN,Q);
+  input CLK;
+  input WEN;
+  input [] D;
+  input [] A;
+  output[] reg Q;
+
+  reg[]men[];
+  always@(posedge CLK)
+    bigin
+       if (WEN)
+           mem[A]<=D;
+       else if (!WEN)
+          Q<=mem[A];
+       end
+     endmodule 
