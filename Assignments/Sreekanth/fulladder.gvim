@@ -1,0 +1,14 @@
+module fulladder(a,b,c,sum,cout);
+input[15:0]a,b;
+output[15:0]sum;
+output cout;
+wire[15:0]c;
+genvar i;
+generate
+for(i=0;i<15;i=i+1)
+begin:fulladd
+fulladder(a[i],b[i],c[i-1],cout,sum[i]);
+end
+assign cout=c[15];
+endgenerate
+endmodule
