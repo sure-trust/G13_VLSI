@@ -1,0 +1,33 @@
+module half_adder (
+    input a,b,
+    output sum,carry
+);
+assign(sum,carry)=a+b;
+endmodule;
+
+
+module HalfAdder(A,B,S,C);
+ input A,B;
+ output S,C;
+ assign S = A^B;
+ assign S = A&B;
+ endmodule
+
+
+module ha(a,b,s,c);
+input a,b;
+output reg s,c;
+always @(*)
+begin
+		casex({a,b}) 
+		0x:begin 
+			s=b;
+		    c=0;
+		   end
+		1x:begin 
+			s=~b;
+		    c=b;
+		   end
+		endcase
+end 
+endmodule
