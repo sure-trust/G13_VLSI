@@ -1,0 +1,47 @@
+module tb_spr();
+  reg clk,Wen;
+  reg [7:0] D;
+  reg [3:0] A;
+  wire [7:0] Q;
+  
+  parameter clock = 5;
+  parameter WRITE_DLY = 2;
+  parameter READ_DLY = 2;
+  
+  spr dut(.clk(clk),.D(D),.A(A),.Q(Q),.Wen(Wen));
+  
+  always 
+    begin
+      #(clock/2);
+      clk=~clk;
+    end
+  
+task initialise;    //initialise task
+begin
+	Wen = 0;
+	D = 0;
+	A = 0;
+end
+endtask
+  
+  initial 
+    begin
+      clk=0;
+    end
+  
+  initial 
+    $monitor("Time = %0d , D = %d, A = %d , Wen = %d , Q = %d ",$time,D,A,Wen,Q);
+  
+task write_task (input [3:0] a, input [7:0] d);   //write task   
+	begin
+      @ (posedge clk)
+	begin
+        Wen = 1;
+        A<=a;
+        D<=d;
+        #(WRITE_DLY);
+      end
+    end
+endtask
+  
+
