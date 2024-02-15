@@ -1,8 +1,9 @@
-module FIFO (CLK,D,Q,WEN,REN,FULL,EMPTY);
+module FIFO(CLK,D,Q,WEN,RST,REN,FULL,EMPTY);
 parameter DEPTH=16;
 parameter WIDTH=8;
 parameter ADDR =4;
-input CLK,RST,WEN,REN;
+input CLK,WEN,REN;
+input RST;
 input [WIDTH-1:0]D;
 output reg [WIDTH-1:0]Q;
 output reg FULL,EMPTY;
@@ -45,6 +46,7 @@ begin
 end
 //STATUS COUNTER LOGIC 
 always@(posedge CLK)
+begin
 	if(RST)
 		status_counter<=0;
 	else
