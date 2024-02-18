@@ -1,0 +1,8 @@
+module PBDIR (PAD, Y, A, IE, OE);
+      input A;
+      input IE, OE;
+      input PAD;
+      output Y;
+    bufif1 g1(Y,PAD,IE);
+    bufif1 g2(PAD,A,OE);
+end module
