@@ -42,14 +42,6 @@ begin
 	endcase
 end
 endmodule
-/*assign out=(state==s0)?3'd0;
-assign out=(state==s1)?3'd1;
-assign out=(state==s2)?3'd2;
-assign out=(state==s3)?3'd3;
-assign out=(state==s4)?3'd4;
-assign out=(state==s5)?3'd5;
-assign out=(state==s6)?3'd6;
-assign out=(state==s7)?3'd7;*/
 
 
 
