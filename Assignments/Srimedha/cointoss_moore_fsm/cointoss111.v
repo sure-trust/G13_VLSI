@@ -1,4 +1,4 @@
-module moore111(input clk,rst,x,output reg y);
+module cointoss111(input clk,rst,x,output reg y);
 reg [2:0] state,nxt_state;
 parameter a=3'b000,b=3'b001,c=3'b010,d=3'b011;
 always@(posedge clk)
@@ -40,6 +40,3 @@ begin
 	  y<=(nxt_state==d);
   end
   endmodule
-
-
-
