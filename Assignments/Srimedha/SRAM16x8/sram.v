@@ -1,9 +1,13 @@
 module sram16x8(clk,d,a,wen,q);       
 input clk, wen;
-input [7:0]d;      
-input [3:0]a;
+parameter a_width=4;
+parameter d_width=8;
+parameter a_depth=16;
+
+input [d_width-1:0]d;      
+input [a_width-1:0]a;
 output reg [7:0]q;
-reg [7:0][15:0]mem;
+reg [d_width-1:0]mem[a_depth-1:0];
 always@(posedge clk)
 begin
 	if (wen==1)
