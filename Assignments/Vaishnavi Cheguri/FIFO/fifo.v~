@@ -1,16 +1,16 @@
-module FIFO(CLK,D,Q,WEN,RST,REN,FULL,EMPTY);
+// Code your design here
+module FIFO (clk,D,Q,Wen,Ren,RST,FULL,EMPTY);
 parameter DEPTH=16;
 parameter WIDTH=8;
 parameter ADDR =4;
-input CLK,WEN,REN;
-input RST;
+input CLK,RST,Wen,Ren;
 input [WIDTH-1:0]D;
 output reg [WIDTH-1:0]Q;
-output reg FULL,EMPTY;
-reg [ADDR-1:0] wr_pointer;    // POINTER REGISTER
-reg [ADDR-1:0] rd_pointer;   //POINTER REGISTER
-reg [WIDTH-1:0] mem [DEPTH-1:0];   //MEMORY CORE
-reg [ADDR+1:0] status_counter;   //STATUS COUNTER
+output FULL,EMPTY;
+reg [ADDR-1:0] wr_pointer;    
+reg [ADDR-1:0] rd_pointer;   
+reg [WIDTH-1:0] mem [DEPTH-1:0];   
+reg [ADDR:0] status_counter;   
 
 //WRITE ADDRESS GENERATOR 
 always@(posedge CLK)
@@ -19,7 +19,7 @@ begin
 		wr_pointer<=0;
 	else
 	begin
-		if (WEN)
+      if (Wen)
 			wr_pointer<=wr_pointer+1;
 	end
 end
@@ -31,7 +31,7 @@ begin
 		rd_pointer<=0;
 	else
 	begin
-		if (REN)
+      if (Ren)
 			rd_pointer<=rd_pointer+1;
 	end
 end
@@ -39,23 +39,22 @@ end
 // WRITE AND READ OPERATION
 always@(posedge CLK)
 begin
-	if (WEN)
+  if (Wen)
 		mem[wr_pointer]<=D;
-	if (REN)
+  else if (Ren)
 		Q<=mem[rd_pointer];
 end
-//STATUS COUNTER LOGIC 
+  
 always@(posedge CLK)
-begin
 	if(RST)
 		status_counter<=0;
 	else
 	begin
-		if ((WEN && !REN) && (status_counter !=DEPTH))
+      if ((Wen && !Ren) && (status_counter !=DEPTH))
 			status_counter<= status_counter+1;
-		if ((REN && !WEN) && (status_counter ==0))
+      if ((Ren && !Wen) && (status_counter ==0))
 			status_counter<= status_counter-1;
-		if (WEN && REN)
+      if (Wen && Ren)
 			status_counter<= status_counter;
 	end
 end

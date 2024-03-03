@@ -1,14 +1,32 @@
-module FIFO(CLK,D,Q,WEN,RST,REN,FULL,EMPTY);
-parameter DEPTH=16;
-parameter WIDTH=8;
-parameter ADDR =4;
-input CLK,WEN,REN;
-input RST;
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 02/11/2024 06:40:24 PM
+// Design Name: 
+// Module Name: fifo
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module fifo #(parameter DEPTH=16, WIDTH=8,ADDR =4) (CLK,D,Q,WEN,REN,FULL,EMPTY,RST);
+input CLK,RST,WEN,REN;
 input [WIDTH-1:0]D;
 output reg [WIDTH-1:0]Q;
-output reg FULL,EMPTY;
-reg [ADDR-1:0] wr_pointer;    // POINTER REGISTER
-reg [ADDR-1:0] rd_pointer;   //POINTER REGISTER
+output  FULL,EMPTY;
+reg [ADDR-1:0] wr_pointer;    
+reg [ADDR-1:0] rd_pointer;   
 reg [WIDTH-1:0] mem [DEPTH-1:0];   //MEMORY CORE
 reg [ADDR+1:0] status_counter;   //STATUS COUNTER
 
@@ -46,7 +64,7 @@ begin
 end
 //STATUS COUNTER LOGIC 
 always@(posedge CLK)
-begin
+ begin
 	if(RST)
 		status_counter<=0;
 	else
