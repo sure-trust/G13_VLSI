@@ -1,0 +1,51 @@
+module coin_toss(CLK,RST,IN,OUT);
+input CLK,RST,IN;
+output reg OUT;
+
+localparam S0=1'b0;
+localparam S1=1'b1;
+
+reg state,next_state;
+
+always @(posedge clk or rst)
+if(rst)
+begin
+state <= S0;
+end
+else
+begin
+state <= next_state;
+end
+end
+
+always @(*)
+begin
+next_state <= state;
+case(state)
+S0: begin
+if(IN ==1)
+begin
+next_state <= S1;
+OUT <= 1;
+end
+else 
+begin
+next_state <= S0;
+OUT <= 0;
+end
+end
+
+S1: begin
+if(IN ==1)
+begin
+next_state <= S1;
+OUT <= 0;
+end
+else 
+begin
+next_state <= S0;
+OUT <= 1;
+end
+end
+endmodule
+

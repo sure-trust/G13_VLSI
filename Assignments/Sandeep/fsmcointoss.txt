@@ -1,0 +1,42 @@
+module fsmcointoss(input CLK,RST,X,output reg Q);
+reg [2:0] state,nxt_state;
+parameter a=3'b000,b=3'b001,c=3'b010,d=3'b011;
+always@(posedge CLK)
+begin
+	if(RST)
+		state<=a;
+	else
+		state<=nxt_state;
+end
+
+always@(*)
+begin
+	case(state)
+		a:begin
+			if(X)
+				nxt_state=b;
+			else
+				nxt_state=a;
+		  end
+		b:begin
+			if(X)
+				nxt_state=c;
+			else
+				nxt_state=a;
+		  end
+		c:begin
+			if(X)
+				nxt_state=d;
+			else
+				nxt_state=a;
+		  end
+		d:begin
+			if(X)
+				nxt_state=d;
+			else
+				nxt_state=a;
+		  end
+	  endcase
+	  Q<=(nxt_state==d);
+  end
+  endmodule
