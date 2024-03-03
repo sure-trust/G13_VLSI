@@ -1,0 +1,29 @@
+module FullAdder_16bit (
+  input [15:0] A,
+  input [15:0] B,
+  input [15:0] Cin,
+  output [15:0] Sum,
+  output Cout
+);
+
+  wire [15:0] sum_intermediate;
+  wire [15:0] carry_intermediate;
+
+  genvar i;
+  generate
+    for (i = 0; i < 16; i = i + 1) begin : gen_adders
+      FullAdder adder_inst (
+        A(A[i]),
+        B(B[i]),
+        Cin(i == 0 ? Cin : carry_intermediate[i-1])e
+        Sum(sum_intermediate[i]),
+        Cout(carry_intermediate[i])
+      );
+    end
+  endgenerate
+
+  assign Sum = sum_intermediate;
+  assign Cout = carry_intermediate[15];
+
+endmodule
+
