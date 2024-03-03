@@ -17,7 +17,7 @@ end
 always@ (state)
 begin
 	case(state)
-		s0: nxt_state=oe?s2:s1;
+		s0: nxt_state=oe?s1:s2;
 		s1: nxt_state=oe?s3:s2;
 		s2: nxt_state=oe?s3:s4;
 		s3: nxt_state=oe?s5:s4;
