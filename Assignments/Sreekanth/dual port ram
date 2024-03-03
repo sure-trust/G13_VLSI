@@ -1,0 +1,45 @@
+module dual port_ram(clkA,clkB, wenA, wenB, AA, AB, DA, DB, QA, QB);
+
+parameter WIDTH=8;
+parameter DEPTH=32;
+
+6 parameter ADDR_SIZE-$clog2(DEPTH);
+
+7
+
+8 input clkA, clkB;
+
+9 input wenA, wenB;  
+10 input [3:0]AA,AB;
+
+11 input [7:0]DA,DB;
+
+12 output reg [7:8]QA,QB;
+
+13
+14 reg [7:0] mem[31:0];
+
+15 always @(posedge clkA) begin.
+
+16  if(wenA==1)begin
+17 mem[AA]=DA;
+
+18 end
+
+19 else begin
+
+20 QA=mem[AA];
+
+21 end
+
+22 end
+
+23 always@(posedge c1kB) begin 
+24 if (wenB==1) begin
+
+25 mem[AB]=DB;
+
+26 end
+
+27 else begin
+
