@@ -1,0 +1,29 @@
+module dpr(D1,D2,clk1,clk2,A1,A2,wen1,wen2,Q1,Q2);
+  
+  
+  input clk1,clk2,wen1,wen2;
+  input [3:0] A1,A2;
+  input [7:0] D1,D2;
+  output reg [7:0] Q1,Q2;
+  
+
+  
+  reg [7:0]  mem [31:0];
+  
+  always @(posedge clk1)
+    begin
+      if (wen1)
+        mem[A1] <= D1;
+      else
+        Q1 <= mem[A1];
+    end
+  
+  
+  always @(posedge clk2)
+    begin
+      if (wen2)
+        mem[A2] <= D2;
+      else
+        Q2 <= mem[A2];
+    end
+endmodule
