@@ -1,0 +1,48 @@
+
+module fsmcointoss_tb;
+reg CLK,RST;
+reg X;
+wire Q;
+  integer i;
+  fsmcointoss dut(CLK,RST,X,Q);
+always #5 CLK=~CLK;
+initial begin
+	/*clk=1;
+	rst=1;
+	x=1;
+	#10;
+	rst=0;
+	x=1;
+	#10;
+	x=0;
+	#10;
+	x=1;
+	#10;
+	x=1;
+	#10;
+	x=1;
+	#10;
+	x=1;
+	#10;
+	x=0;
+	#10;
+	x=1;
+    #10;
+	$finish;*/
+    CLK=1;
+	RST=1;
+	X=1;
+	#10;    
+	RST=0;
+	for(i=0;i<50;i=i+1) 
+            begin
+              X <= $urandom_range(0,1);
+              #10;
+            end
+        #20 $finish;
+end
+  initial begin
+    $dumpfile("dump.vcd");
+    $dumpvars;
+  end
+endmodule
