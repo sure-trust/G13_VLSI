@@ -1,9 +1,0 @@
-module shiftreg(PI,Pclk,Se,So);
-  input PI,Pclk,Se;
-  output So;
-  wire W1,W2,W3;
-  SDFF Sf1(.SE(Se),.clk(Pclk),.D(PI),.Q(W1));
-  SDFF Sf2(.SE(Se),.clk(Pclk),.D(W1),.Q(W2));
-  SDFF Sf3(.SE(Se),.clk(Pclk),.D(W2),.Q(W3));
-  SDFF Sf4(.SE(Se),.clk(Pclk),.D(W3),.Q(So));
-endmodule
