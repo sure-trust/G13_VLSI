@@ -5,12 +5,12 @@ Update_DR,
 TDI,
 TCK,
 tdr_Select,
-SO_DR);
+SO_DR_OUT);
 
 parameter DR_LENGTH = 5;
 
 input TDI ,tdr_Select, TCK , Shift_DR , Capture_DR , Update_DR;
-output  SO_DR;
+output  SO_DR_OUT;
 
 reg [DR_LENGTH-1:0] Shift_reg,Update_DR_reg;
 

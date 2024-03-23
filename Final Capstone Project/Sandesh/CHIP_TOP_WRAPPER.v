@@ -1,9 +1,9 @@
-module Chip_top_Wrapper(
+module Chip_Top_Wrapper(
 input TCK,TMS,TDI,
 output TDO);
 
-reg tdr_select;
-wire IR_S0,DR_S0;
+reg tdr_Select;
+wire SO_IR_OUT,SO_DR_OUT,W_tdr_Select,W_DR_OUT,W_SO_DR_OUT;
 wire W_Capture_IR_out,
      W_Capture_DR_out,
      W_Update_IR_out,
@@ -36,26 +36,27 @@ INSTRUCTION_REGISTER dut( .TDI(TDI),
                       .Shift_IR(W_Shift_IR_out),
                       .Capture_IR(W_Capture_IR_out), 
                       .Update_IR(W_Update_IR_out),
-                      .TDO(IR_S0),
+                      .SO_IR_OUT(W_SO_IR_OUT),
                       .IR_OUT(W_IR_out));
 
+IR_DECODER ird (.IR_input(W_IR_out),
+				.tdr_Select(W_tdr_Select));
+
+				
 Bypass_DR data(.TDI(TDI),
-              .tdr_select(tdr_select), 
+              .tdr_Select(W_tdr_Select), 
               .TCK(TCK), 
               .Shift_DR(W_Shift_DR_out), 
               .Capture_DR(W_Capture_DR_out),
               .Update_DR(W_Update_DR_out),
-              .TDO(DR_S0),
-              .SO_DR(W_DR_out));
+              .SO_DR_OUT(W_SO_DR_OUT),
+              .SO_DR_OUT(W_DR_OUT));
               
-              
- always @(W_IR_out)
-    begin
-        case(W_IR_out)
-           5'b00000 : tdr_select =1'b1;  
-           default : tdr_select = 'hz;
-        endcase
-    end
+TDO_CONTROL_BOX tcb (.Shift_IR(W_Shift_IR),
+					 .Shift_DR(W_Shift_DR),
+					 .SO_DR_OUT(W_SO_DR_OUT),
+					 .SO_IR_OUT(W_SO_IR_OUT),
+					 .TDO(TDO));
 
-assign TDO = (W_Shift_IR_out & IR_S0) | ( W_Shift_DR_out & DR_S0);
+ 
 endmodule
