@@ -1,9 +1,7 @@
-
-// Code your design here
 //TAP_FSM
 
 module TAP_FSM( 
-   input TRST,TCLK,TMS,
+   input TCK,TMS,
    output Run_Test_Idle_out,
 	Test_Logic_Reset_out,
 	Select_DR_Scan_out,
@@ -40,12 +38,11 @@ localparam Pause_IR=4'd13;
 localparam Exit2_IR=4'd14;
 localparam Update_IR=4'd15;
 //updation of state
-always @(posedge TCLK or negedge TRST)
+always @(posedge TCK )
 begin
-if(!TRST)
+
 	state <= Test_Logic_Reset;
-else
-	state <= nxt_state;
+	
 end
 
 

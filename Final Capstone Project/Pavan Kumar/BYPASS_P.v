@@ -1,3 +1,4 @@
+  //BYPADSS_MODULE UNIT
 module BYPASS_DR(
 Shift_DR,
 Capture_DR, 
@@ -5,12 +6,12 @@ Update_DR,
 TDI,
 TCK,
 tdr_Select,
-SO_DR_OUT);
+DR_TDO);
 
 parameter DR_LENGTH = 5;
 
 input TDI ,tdr_Select, TCK , Shift_DR , Capture_DR , Update_DR;
-output  SO_DR_OUT;
+output  DR_TDO;
 
 reg [DR_LENGTH-1:0] Shift_reg,Update_DR_reg;
 
@@ -32,6 +33,6 @@ always @(posedge TCK)
             end        
         end
     end
- assign SO_DR = Shift_reg[DR_LENGTH-1];
+ assign DR_TDO = Shift_reg[DR_LENGTH-1];
 endmodule
-
+  
