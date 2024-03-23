@@ -1,0 +1,43 @@
+module spr_16x8_tb();
+   reg CLK, WEN;
+   reg [7:0] D;
+   reg [3:0] A;
+   wire [7:0] Q;
+
+ parameter CLK_PERIOD = 20;
+ spr_16x8 DUT  (.....);
+ //clock generation
+always 
+begin
+    #(CLK_PERIOD/2);
+     CLK=0;
+    #(CLK_PERIOD/2);
+    CLK=1;
+end
+
+//
+initial
+begin
+    @(posedge CLK)
+    begin
+       WEN<=1;
+       A<=4'b0000;
+       D<=8'h00;
+       #10
+  end 
+
+@(posedge CLK)
+begin
+   WEN<=1;
+   A<= 4'b0000;
+   D<=8'h00;
+   #10
+end
+
+@(posedge CLK)
+begin 
+    WEN<=0;
+     A<=4'b0000;
+     #10;
+  end 
+end

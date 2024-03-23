@@ -1,0 +1,26 @@
+
+module mem(clkA,clkB,DA,DB,AA,AB,wenA,wenB,QA,QB);
+input clkA,clkB;
+input wenA,wenB;
+input [7:0]DA,DB;
+input [3:0]AA,AB;
+output reg [7:0]QA,QB;
+reg [7:0] memory[31:0];
+always @(posedge clkA)
+begin
+if(wenA)
+begin
+memory[AA] <= DA;
+end
+else
+QA<=memory[AA];
+end
+end
+always @(posedge clkB);
+begin
+if(wenB)
+memory[AB]<=DB;
+else
+QB<=memory[AB];
+end
+endmodule
