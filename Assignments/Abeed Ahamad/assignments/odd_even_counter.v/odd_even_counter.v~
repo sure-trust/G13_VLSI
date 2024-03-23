@@ -1,0 +1,134 @@
+module odd_even_counter(CLK,OE,OUT,RST);
+input CLK;
+input OE;
+input RST;
+output [2:0]OUT;
+
+//defined the states
+localparam S0=3'b000,
+           S1=3'b001,
+           S2=3'b010,
+           S3=3'b011,
+           S4=3'b100,
+           S5=3'b101,
+           S6=3'b110,
+           S7=3'b111;
+   //CREATE STATE POINTERS
+   reg[2:0] state,next_state;
+   //Block-1 -update 'state'
+    always @(posedge CLK or RST)
+    begin
+	    if(RST)
+		    state<=S0;
+	            nxt_state<=S0;
+		    else
+			    state<=nxt_state;
+	    end
+
+	    //block 2-update 'nxt_state'
+	    //nxt state=present state && input 
+	    always @(state,OE)
+	    begin
+		   case(state)
+		   begin
+			  S0:if (OE)
+		                nxt_state<=S1;
+		          else
+		                nxt_state<=S2;
+
+			
+			  S1:if (OE)
+		                nxt_state<=S3;
+		          else
+		                nxt_state<=S2;
+
+			
+			  S2:if (OE)
+		                nxt_state<=S3;
+		          else
+		                nxt_state<=S4;
+
+			
+			  S3:if (OE)
+		                nxt_state<=S5;
+		          else
+		                nxt_state<=S4;
+
+			
+			  S4:if (OE)
+		                nxt_state<=S5;
+		          else
+		                nxt_state<=S6;
+
+			
+			  S5:if (OE)
+		                nxt_state<=S7;
+		          else
+		                nxt_state<=S6;
+
+			 S6:if (OE)
+		                nxt_state<=S7;
+		          else
+		                nxt_state<=S0;
+
+		         S7:if (OE)
+		                nxt_state<=S2;
+		          else
+		                nxt_state<=S0;
+
+			default:nxt_state=S0;
+		endcase
+	end
+	always @(state,OE)
+	
+	Begin
+		case(state)
+                  S0:OUT=0;
+                  S1:OUT=1;
+                  S2:OUT=2;
+                  S3:OUT=3;
+                  S4:OUT=4;
+                  S5:OUT=5;
+                  S6:OUT=6;
+                  S7:OUT=7
+
+		  default:OUT=0;
+	  endcase
+  end
+  endmodule
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		end
+		endmodule
+
+
+
+
+			
+			
+
+
+
+
+
+
+
+
+
+
+
+		
+
