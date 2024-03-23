@@ -1,0 +1,42 @@
+module even_parity_generator(CLK,RST,IN,OUT);
+input CLK,RST;
+input IN;
+output reg OUT;
+
+localparam S0=1'b0;
+localparam S1=1'b1;
+
+reg state,next_state;
+
+always @(posedge CLK or RST)
+begin
+if(RST)
+state <= S0;
+else
+state <= nextstate;
+end
+
+always @(state or IN)
+begin
+s0: if(IN == 1)
+     begin
+     state <= S1;
+     OUT <= 1;
+     end
+   else
+     begin
+      state <= S0;
+       OUT <= 0;
+    end
+s1: if(IN == 1)
+     begin
+     state <= S0;
+     OUT <= 0;
+     end
+   else
+     begin
+      state <= S1;
+       OUT <= 1;
+    end
+end
+endmodule
