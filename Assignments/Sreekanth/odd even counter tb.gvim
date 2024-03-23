@@ -1,0 +1,56 @@
+module Odd_Even_counter_TB();
+reg CLK,RST,OE;
+wire [2:0] OUT;
+
+parameter CLK_PRD =10;
+
+Odd_Even_counter dut(CLK,OE,RST,OUT);
+
+always 
+begin
+CLK= 1'b1;
+#(CLK_PRD/2);
+CLK= 1'b0;
+#(CLK_PRD/2);
+end
+
+task even_odd( input i);
+begin
+ @(posedge CLK)
+   OE = i;
+end
+endtask
+
+task initialise;
+begin
+RST=1'b0;
+OE= 1'b0;
+end
+endtask
+
+task reset;
+begin
+@(posedge CLK)
+RST=1'b1;
+@(posedge CLK)
+RST=1'b0;
+end
+endtask
+
+initial begin
+initialise;
+reset;
+even_odd(1'b1); // S0 to S1
+even_odd(1'b1); // S1 to S3
+even_odd(1'b1); // S3 to S5
+even_odd(1'b1); // S5 to S7
+even_odd(1'b1); // S7 to S0
+
+repeat(4)
+begin
+even_odd(1'b0);  //even mode
+end
+
+$finish;
+end
+endmodule
