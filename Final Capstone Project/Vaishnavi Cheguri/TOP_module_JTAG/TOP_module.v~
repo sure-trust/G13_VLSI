@@ -1,0 +1,20 @@
+include "TAPFSM.sv"
+`include "IR.sv"
+`include "DR.sv"
+`include "IR_decoder.sv"
+`include "TDO_controlbox.sv"
+module TOP_module (TCK,TMS,TDI,TDO);
+input TCK,TMS,TDI;
+output TDO;
+  
+  TAPFSM dut0(.TCLK(TCK), .TMS(TMS), .CAPTURE_DR_OUT(Capture_DR), .SHIFT_DR_OUT(Shift_DR), .UPDATE_DR_OUT(Update_DR), .CAPTURE_IR_OUT(Capture_IR), .SHIFT_IR_OUT(Shift_IR), .UPDATE_IR_OUT(Update_IR));
+  
+  IR dut1(.TCK(TCK), .TDI(TDI), .IR_out(IR_out),.IR_TDO(IR_TDO));
+  
+  DR dut2(.TCK(TCK), .TDR_Select(TDR_Select), .TDI(TDI),.DR_TDO(DR_TDO));
+  
+  IR_decoder dut3(.IR_out(IR_out), .TDR_Select(TDR_Select));
+  
+  TDO_controlbox dut4(Shift_IR(Shift_IR_OUT),Shift_DR(Shift_DR_OUT),IR_TDO(IR_TDO),DR_TDO(DR_TDO),TDO(TDO));
+
+endmodule

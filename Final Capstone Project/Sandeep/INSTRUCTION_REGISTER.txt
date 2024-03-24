@@ -1,0 +1,32 @@
+module INSTRUCTION_REGISTER (
+UpdateIR,
+CaptureIR,
+ShiftIR,
+TDO,
+IR_OUT,
+ TCK);
+parameter IR_LENGTH = 5;
+
+input UpdateIR, CaptureIR, ShiftIR;
+ input TDI, TCK;
+ output TD0;
+  output [IR_LENGTH-1: 0] IR_OUT;
+  reg [IR_LENGTH-1 : 0] Shift_reg, Update_reg;
+always @(posedge TCK)
+begin
+
+ if (CaptureIR)
+   Shift_reg <= {IR_LENGTH{1'b1}};
+
+ else if (ShiftIR)
+
+   Shift_reg <= {Shift_reg[IR_LENGTH-2: 0], TDI};
+
+  else if (UpdateIR)
+
+ update_reg <= shift_reg;
+
+ end
+ assign TDO =  Shift_reg[IR_LENGTH-1];
+ assign IR_OUT = Update_reg;
+endmodule
