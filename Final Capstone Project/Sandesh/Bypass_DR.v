@@ -32,6 +32,6 @@ always @(posedge TCK)
             end        
         end
     end
- assign SO_DR = Shift_reg[DR_LENGTH-1];
+ assign SO_DR_OUT = Shift_reg[DR_LENGTH-1];
 endmodule
 

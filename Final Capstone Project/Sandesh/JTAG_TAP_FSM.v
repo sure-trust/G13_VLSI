@@ -61,7 +61,7 @@ begin
   Exit1_IR: next_state = TMS ? Update_IR : Pause_IR;
   Pause_IR: next_state = TMS ? Exit2_IR : Pause_IR;
   Exit2_IR: next_state = TMS ? Update_IR : Shift_IR;
-  Update_IR: next_state = TMS ?Select_IR_Scan : Run_Test_Idle;
+  Update_IR: next_state = TMS ?Select_DR_Scan : Run_Test_Idle;
   default: next_state = Test_Logic_Reset;
   endcase
 end
