@@ -1,0 +1,114 @@
+`timescale 1ns/1ps
+module INSTRUCTION_REGISTER_tb;
+  reg tdr_select, TDI, TCK, Capture_IR, Shift_IR, Update_IR;
+  parameter IR_length = 5;
+  wire TDO;
+  wire [IR_length-1:0] IR_out;
+  reg [IR_length-1:0] Shift_reg;
+
+
+ INSTRUCTION_REGISTER dut (
+    .tdr_select(tdr_select),
+    .TCK(TCK),
+    .TDI(TDI),
+   .Capture_IR(Capture_IR),
+   .Shift_IR(Shift_IR),
+   .Update_IR(Update_IR),
+    .TDO(TDO),
+   .IR_out(IR_out)
+  );
+
+  
+  always @ (posedge TCK) begin
+    if (tdr_select) begin
+      case({Capture_IR, Shift_IR, Update_IR})
+        3'b001: Shift_IR <= 1; 
+        3'b010: Shift_IR <= 0; 
+        3'b100: Update_IR <= 1; 
+        default: Shift_IR <= 0; 
+      endcase
+    end
+  end
+
+  
+  initial begin
+    tdr_select = 0;
+    TCK = 1;
+    TDI = 0;
+    Capture_IR = 0;
+    Shift_IR = 0;
+    Update_IR = 0;
+
+    #10; 
+    // Test case 1
+    tdr_select = 0;
+    Capture_IR = 1;
+    #10;
+    Capture_IR = 0;
+    @(posedge TCK);
+    TDI = 1;
+    @(posedge TCK);
+    TDI = 0;
+    @(posedge TCK);
+    TDI = 0;
+    @(posedge TCK);
+    TDI = 1;
+    @(posedge TCK);
+    TDI = 0;
+    #10;
+    Shift_IR = 0;
+    @(posedge TCK);
+    Update_IR = 1;
+    #10;
+
+    // Test case 2
+    tdr_select = 1;
+    Capture_IR = 1;
+    #10;
+    Capture_IR = 0;
+    @(posedge TCK);
+    TDI = 0;
+    @(posedge TCK);
+    TDI = 0;
+    @(posedge TCK);
+    TDI = 0;
+    @(posedge TCK);
+    TDI = 0;
+    @(posedge TCK);
+    TDI = 0;
+    #10;
+    Shift_IR = 0;
+    @(posedge TCK);
+    Update_IR = 1;
+    #10;
+
+    // Test case 3
+    Capture_DR = 1;
+    #10;
+    Capture_DR = 0;
+    @(posedge TCK);
+    TDI = 0;
+    @(posedge TCK);
+    TDI = 0;
+    @(posedge TCK);
+    TDI = 0;
+    @(posedge TCK);
+    TDI = 1;
+    @(posedge TCK);
+    TDI = 0;
+    #10;
+    Shift_IR = 0;
+    @(posedge TCK);
+    Update_IR = 1;
+    #10;
+
+    $finish;
+  end
+
+  
+  initial begin
+    $dumpfile("dump.vcd");
+    $dumpvars;
+  end
+
+endmodule

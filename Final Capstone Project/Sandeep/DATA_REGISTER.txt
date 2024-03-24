@@ -1,0 +1,30 @@
+module DATA_REGISTER  (
+UpdateDR,
+CaptureDR,
+ShiftDR,
+TDO,
+DR_OUT,
+ TCK);
+parameter DR_LENGTH = 5;
+input UpdateDR, CaptureDR, ShiftDR;
+  input TDI, TCK;
+ output TD0;
+  output [DR_LENGTH-1: 0] DR_OUT;
+  reg [DR_LENGTH-1 : 0] Shift_reg, Update_reg;
+always @(posedge TCK)
+begin
+
+  if (CaptureDR)
+    Shift_reg <= {DR_LENGTH{1'b1}};
+
+  else if (ShiftDR)
+
+    Shift_reg <= {Shift_reg[DR_LENGTH-2: 0], TDI};
+
+  else if (UpdateDR)
+update_reg <= shift_reg;
+
+ end
+  assign TDO =  Shift_reg[DR_LENGTH-1];
+ assign DR_OUT = Update_reg;
+endmodule
