@@ -1,15 +1,17 @@
-module Chip_Top_Wrapper(
-input TCK,TMS,TDI,
-output TDO);
+module Chip_Top_Wrapper(TCK,TMS,TDI, TDO);
+input TCK,TMS,TDI;
+output TDO;
 
-reg tdr_Select;
-wire SO_IR_OUT,SO_DR_OUT,W_tdr_Select,W_DR_OUT,W_SO_DR_OUT;
+wire W_tdr_Select,
+	 W_SO_DR_OUT,
+	 W_SO_IR_OUT;
+
 wire W_Capture_IR_out,
-     W_Capture_DR_out,
+   	 W_Shift_IR_out,
      W_Update_IR_out,
-     W_Update_DR_out,
-     W_Shift_IR_out,
-     W_Shift_DR_out; 
+	 W_Capture_DR_out,
+	 W_Shift_DR_out,
+	 W_Update_DR_out;
 wire [4:0] W_IR_out;
      
 TAP_FSM fsm(  .TCK(TCK) ,
@@ -31,7 +33,7 @@ TAP_FSM fsm(  .TCK(TCK) ,
               .Update_DR_out(W_Update_DR_out),
               .Update_IR_out(W_Update_IR_out));   
               
-INSTRUCTION_REGISTER dut( .TDI(TDI), 
+INSTRUCTION_REGISTER ir( .TDI(TDI), 
                       .TCK(TCK),
                       .Shift_IR(W_Shift_IR_out),
                       .Capture_IR(W_Capture_IR_out), 
@@ -43,14 +45,13 @@ IR_DECODER ird (.IR_input(W_IR_out),
 				.tdr_Select(W_tdr_Select));
 
 				
-Bypass_DR data(.TDI(TDI),
+Bypass_DR byp(.TDI(TDI),
               .tdr_Select(W_tdr_Select), 
               .TCK(TCK), 
               .Shift_DR(W_Shift_DR_out), 
               .Capture_DR(W_Capture_DR_out),
               .Update_DR(W_Update_DR_out),
-              .SO_DR_OUT(W_SO_DR_OUT),
-              .SO_DR_OUT(W_DR_OUT));
+              .SO_DR_OUT(W_SO_DR_OUT));
               
 TDO_CONTROL_BOX tcb (.Shift_IR(W_Shift_IR),
 					 .Shift_DR(W_Shift_DR),
