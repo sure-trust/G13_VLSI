@@ -1,0 +1,11 @@
+module IR_Decoder (IR_input, TDR_select);
+input IR_out;
+output tDR_select;
+always @(IR_input)
+begin
+case(IR_input)
+5'b11111 : TDR_select =1';  
+           default : TDR_select =0;
+        endcase
+    end
+endmodule
