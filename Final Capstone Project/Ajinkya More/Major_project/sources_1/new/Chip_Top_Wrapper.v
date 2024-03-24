@@ -21,7 +21,7 @@
 
 
 module Chip_Top_Wrapper(input TCK,TMS,TDI,output TDO);
-reg tdr_select;
+wire w_tdr_select;
 wire IR_S0,DR_S0;
 wire W_Capture_IR_out,
      W_Capture_DR_out,
@@ -55,26 +55,18 @@ Instrunction_reg dut( .TDI(TDI),
                       .Shift_IR(W_Shift_IR_out),
                       .Capture_IR(W_Capture_IR_out), 
                       .Update_IR(W_Update_IR_out),
-                      .TDO(IR_S0),
+                      .IR_TDO(IR_S0),
                       .IR_OUT(W_IR_out));
 
 Data_Reg data(.TDI(TDI),
-              .tdr_select(tdr_select), 
+              .tdr_select(w_tdr_select), 
               .TCK(TCK), 
               .Shift_DR(W_Shift_DR_out), 
               .Capture_DR(W_Capture_DR_out),
               .Update_DR(W_Update_DR_out),
-              .TDO(DR_S0),
-              .DR_OUT(W_DR_out));
+              .DR_OUT(DR_S0));
               
-              
- always @(W_IR_out)
-    begin
-        case(W_IR_out)
-           5'b00000 : tdr_select =1'b1;  
-           default : tdr_select = 'hz;
-        endcase
-    end
+IR_Decoder decoder(.IR_input(W_IR_out),.TDR_select(w_tdr_select));          
 
-assign TDO = (W_Shift_IR_out & IR_S0) | ( W_Shift_DR_out & DR_S0);
+assign TDO = (W_Shift_IR_out && IR_S0) || ( W_Shift_DR_out && DR_S0);
 endmodule

@@ -42,9 +42,33 @@ always @(posedge TCK)
             end        
         end
     end
- assign TDO = Shift_reg[DR_Length-1];
- //assign DR_OUT = Update_DR_reg;
+ assign TDO = Shift_reg[4];
+ assign DR_OUT = Update_DR_reg;
 endmodule
 
 
+/*
+module data_reg(tdr_select,TCK,TDI,Capture_DR,Shift_DR,Update_DR,TDO,DR_out);
+  input tdr_select,TCK,TDI,Capture_DR,Shift_DR,Update_DR;
+  output TDO;
+  parameter DR_length=5;
+  output [DR_length-1:0]DR_out;
+  reg [DR_length-1:0] Shift_reg, Update_reg;
+  always @(posedge TCK)
+    begin
+      if(tdr_select)
+        begin
+          if(Capture_DR)
+            Shift_reg<= {DR_length{1'b1}};
+          else if(Shift_DR)
+            Shift_reg<={ Shift_reg[DR_length-2:0] ,TDI}; 
+          else if(Update_DR)
+            Update_reg<=Shift_reg;
+        end	
+    end
+  assign TDO=Shift_reg[0];
+  assign DR_out= Update_reg;
+endmodule
 
+
+*/
