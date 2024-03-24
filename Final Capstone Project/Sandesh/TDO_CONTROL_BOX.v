@@ -1,4 +1,4 @@
-module TDO_CONTROL_BOX(input Shift_IR,Shift_DR,SO_DR_OUT,SO_IR_OUT
+module TDO_CONTROL_BOX(input Shift_IR,Shift_DR,SO_DR_OUT,SO_IR_OUT,
 output TDO);
 
 wire w1,w2;
