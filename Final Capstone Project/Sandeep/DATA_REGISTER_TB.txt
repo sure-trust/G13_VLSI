@@ -1,0 +1,115 @@
+`timescale 1ns/1ps
+module DATA_REGISTER_tb;
+  reg tdr_select, TDI, TCK, Capture_DR, Shift_DR, Update_DR;
+  parameter DR_length = 5;
+  wire TDO;
+  wire [DR_length-1:0] DR_out;
+  reg [DR_length-1:0] Shift_reg;
+
+  // Instantiate DUT
+  DATA_REGISTER dut (
+    .tdr_select(tdr_select),
+    .TCK(TCK),
+    .TDI(TDI),
+    .Capture_DR(Capture_DR),
+    .Shift_DR(Shift_DR),
+    .Update_DR(Update_DR),
+    .TDO(TDO),
+    .DR_out(DR_out)
+  );
+
+  // Procedural continuous assignment
+  always @ (posedge TCK) begin
+    if (tdr_select) begin
+      case({Capture_DR, Shift_DR, Update_DR})
+        3'b001: Shift_DR <= 1; // Capture_DR high
+        3'b010: Shift_DR <= 0; // Shift_DR high
+        3'b100: Update_DR <= 1; // Update_DR high
+        default: Shift_DR <= 0; // All other cases
+      endcase
+    end
+  end
+
+  // Test procedure
+  initial begin
+    tdr_select = 0;
+    TCK = 1;
+    TDI = 0;
+    Capture_DR = 0;
+    Shift_DR = 0;
+    Update_DR = 0;
+
+    #10; // Wait a few cycles before starting
+
+    // Test case 1
+    tdr_select = 0;
+    Capture_DR = 1;
+    #10;
+    Capture_DR = 0;
+    @(posedge TCK);
+    TDI = 1;
+    @(posedge TCK);
+    TDI = 0;
+    @(posedge TCK);
+    TDI = 0;
+    @(posedge TCK);
+    TDI = 1;
+    @(posedge TCK);
+    TDI = 0;
+    #10;
+    Shift_DR = 0;
+    @(posedge TCK);
+    Update_DR = 1;
+    #10;
+
+    // Test case 2
+    tdr_select = 1;
+    Capture_DR = 1;
+    #10;
+    Capture_DR = 0;
+    @(posedge TCK);
+    TDI = 0;
+    @(posedge TCK);
+    TDI = 0;
+    @(posedge TCK);
+    TDI = 0;
+    @(posedge TCK);
+    TDI = 0;
+    @(posedge TCK);
+    TDI = 0;
+    #10;
+    Shift_DR = 0;
+    @(posedge TCK);
+    Update_DR = 1;
+    #10;
+
+    // Test case 3
+    Capture_DR = 1;
+    #10;
+    Capture_DR = 0;
+    @(posedge TCK);
+    TDI = 0;
+    @(posedge TCK);
+    TDI = 0;
+    @(posedge TCK);
+    TDI = 0;
+    @(posedge TCK);
+    TDI = 1;
+    @(posedge TCK);
+    TDI = 0;
+    #10;
+    Shift_DR = 0;
+    @(posedge TCK);
+    Update_DR = 1;
+    #10;
+
+    $finish;
+  end
+
+  // Dump variables
+  initial begin
+    $dumpfile("dump.vcd");
+    $dumpvars;
+  end
+
+endmodule

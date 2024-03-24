@@ -1,0 +1,112 @@
+module tap_fsm (
+    input TMS,TCK,TRST,       
+   output Test_Logic_Reset_out,
+   output Run_Test_Idle_out,
+   output Select_DR_Scan_out,
+   output Capture_DR_out,
+   output Shift_DR_out,
+   output Exit1_DR_out,
+   output Pause_DR_out,
+   output Exit2_DR_out,
+   output Update_DR_out,
+   output Select_IR_Scan_out,
+   output Capture_IR_out,
+   output Shift_IR_out,
+   output Exit1_IR_out,
+   output Pause_IR_out,
+   output Exit2_IR_out,
+   output Update_IR_out
+);
+);
+
+// Registers for TAP state machine
+reg [2:0] current_state, next_state;
+reg test_logic_reset, run_test_idle, select_dr_scan, capture_dr, shift_dr, exit1_dr, pause_dr, exit2_dr, update_dr;
+reg select_ir_scan, capture_ir, shift_ir, exit1_ir, pause_ir, exit2_ir, update_ir;
+reg extest_select, sample_preload_select;
+
+// tap states
+parameter Test_Logic_Reset= 4'b0000,      
+  Run_Test_Idle=4'b0001,
+  Select_DR_Scan=4'b0010,
+  Capture_DR=4'b0011,
+  Shift_DR=4'b0100,
+  Exit1_DR=4'b0101,
+  Pause_DR=4'b0110,
+  Exit2_DR=4'b0111,
+  Update_DR=4'b1000,
+  Select_IR_Scan=4'b1001,
+  Capture_IR=4'b1010,
+  Shift_IR=4'b1011,
+  Exit1_IR=4'b1100,
+  Pause_IR=4'b1101,
+  Exit2_IR=4'b1110,
+  Update_IR=4'b1111;
+  
+
+// Define TAP states transition conditions
+always @(posedge TCK or posedge TRST) begin
+    if (TRST) begin
+        test_logic_reset <= 1'b1;
+        current_state <= TEST_LOGIC_RESET;
+    end else if (TMS) begin
+        test_logic_reset <= 1'b1;
+        current_state <= TEST_LOGIC_RESET;
+    end else begin
+        test_logic_reset <= (TMS & (test_logic_reset | select_ir_scan));
+        current_state <= next_state;
+    end
+end
+
+// Define TAP state transitions
+always @* begin
+    case (current_state)
+        TEST_LOGIC_RESET: begin
+            next_state = RUN_TEST_IDLE;
+        end
+        RUN_TEST_IDLE: begin
+            next_state = (TMS & (test_logic_reset | run_test_idle | update_dr | update_ir)) ? TEST_LOGIC_RESET : RUN_TEST_IDLE;
+        end
+        SELECT_DR_SCAN: begin
+            next_state = (TMS & (run_test_idle | update_dr | update_ir)) ? TEST_LOGIC_RESET : SELECT_DR_SCAN;
+        end
+        CAPTURE_DR: begin
+            next_state = (~TMS & select_dr_scan) ? SHIFT_DR : CAPTURE_DR;
+        end
+        SHIFT_DR: begin
+            next_state = (~TMS & (capture_dr | shift_dr | exit2_dr)) ? SHIFT_DR : EXIT1_DR;
+        end
+        EXIT1_DR: begin
+            next_state = (TMS & (capture_dr | shift_dr)) ? TEST_LOGIC_RESET : PAUSE_DR;
+        end
+        PAUSE_DR: begin
+            next_state = (~TMS & (exit1_dr | pause_dr)) ? PAUSE_DR : EXIT2_DR;
+        end
+        EXIT2_DR: begin
+            next_state = (TMS & pause_dr) ? TEST_LOGIC_RESET : UPDATE_DR;
+        end
+        UPDATE_DR: begin
+            next_state = (TMS & (exit1_dr | exit2_dr)) ? TEST_LOGIC_RESET : RUN_TEST_IDLE;
+        end
+        default: begin
+            next_state = TEST_LOGIC_RESET;
+        end
+    endcase
+end
+
+// tap fsm state output
+always * begin
+    shift_DR_out = (current_state == SHIFT_DR) ? 1'b1 : 1'b0;
+    pause_DR_out = (current_state == PAUSE_DR) ? 1'b1 : 1'b0;
+    update_DR_out = (current_state == UPDATE_DR) ? 1'b1 : 1'b0;
+    capture_DR_out = (current_state == CAPTURE_DR) ? 1'b1 : 1'b0;
+    extest_select_out = extest_select;
+    sample_preload_select_out = sample_preload_select;
+    TDO = TDI;
+end
+
+always @(posedge TCK) begin
+    TDO <= TDI;
+end
+
+endmodule
