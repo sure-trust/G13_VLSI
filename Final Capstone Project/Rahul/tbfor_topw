@@ -1,0 +1,82 @@
+module tb_top_wrapper();
+reg tb_TDI,tb_TCK,tb_TMS;
+wire tb_TDO;
+
+parameter clock = 10;
+
+Chip_Top_Wrapper dut(.TCK(tb_TCK),.TMS(tb_TMS),.TDI(tb_TDI),.TDO(tb_TDO));
+always #(clock/2) tb_TCK<=~tb_TCK;
+
+task initialize;
+    begin
+        tb_TDI<=1'b0;
+        tb_TCK<=1'b1;
+        tb_TMS<=1'b1;
+    end
+
+ endtask
+
+initial begin
+   
+   initialize;
+    @(posedge tb_TCK) tb_TMS<=1'b0;
+    @(posedge tb_TCK) tb_TMS<=1'b0;
+    @(posedge tb_TCK) tb_TMS<=1'b0;
+    @(posedge tb_TCK) tb_TMS<=1'b1;
+    @(posedge tb_TCK) tb_TMS<=1'b1;
+    @(posedge tb_TCK) tb_TMS<=1'b0;
+    @(posedge tb_TCK) tb_TMS<=1'b0;
+    @(posedge tb_TCK) tb_TMS<=1'b0;   
+                      tb_TDI<=1'b1;
+    @(posedge tb_TCK) tb_TMS<=1'b0; 
+                      tb_TDI<=1'b1;
+    @(posedge tb_TCK) tb_TMS<=1'b0;  
+                      tb_TDI<=1'b1;
+    @(posedge tb_TCK) tb_TMS<=1'b0;  
+                      tb_TDI<=1'b1;
+    @(posedge tb_TCK) tb_TMS<=1'b0;  
+                      tb_TDI<=1'b1;
+    @(posedge tb_TCK) tb_TMS<=1'b1;  
+    @(posedge tb_TCK) tb_TMS<=1'b1;   
+    @(posedge tb_TCK) tb_TMS<=1'b1;  
+    @(posedge tb_TCK) tb_TMS<=1'b0;
+    @(posedge tb_TCK) tb_TMS<=1'b0;
+    @(posedge tb_TCK) tb_TMS<=1'b0;
+                      tb_TDI<=1'b0;
+    @(posedge tb_TCK) tb_TMS<=1'b0;
+                      tb_TDI<=1'b0;
+    @(posedge tb_TCK) tb_TMS<=1'b0;
+                      tb_TDI<=1'b1;
+    @(posedge tb_TCK) tb_TMS<=1'b0;
+                      tb_TDI<=1'b1;
+    @(posedge tb_TCK) tb_TMS<=1'b0;
+                      tb_TDI<=1'b1;
+    @(posedge tb_TCK) tb_TMS<=1'b0;   
+                      tb_TDI<=1'b1;
+    @(posedge tb_TCK) tb_TMS<=1'b0;   
+                      tb_TDI<=1'b0;
+   @(posedge tb_TCK) tb_TMS<=1'b0;   
+                      tb_TDI<=1'b1;
+    @(posedge tb_TCK) tb_TMS<=1'b1; 
+    @(posedge tb_TCK) tb_TMS<=1'b1; 
+    @(posedge tb_TCK) tb_TMS<=1'b1; 
+    @(posedge tb_TCK) tb_TMS<=1'b0; 
+   /* @(posedge tb_TCK) tb_TMS<=1'b0;      
+                      tb_TDI<=1'b1;
+    @(posedge tb_TCK) tb_TMS<=1'b0;     
+                      tb_TDI<=1'b1;
+    @(posedge tb_TCK) tb_TMS<=1'b0;     
+                      tb_TDI<=1'b1;
+    @(posedge tb_TCK) tb_TMS<=1'b0;      
+                      tb_TDI<=1'b1;
+    @(posedge tb_TCK) tb_TMS<=1'b1;       
+                      tb_TDI<=1'b0;
+    @(posedge tb_TCK) tb_TMS<=1'b1;
+    @(posedge tb_TCK) tb_TMS<=1'b1; 
+    @(posedge tb_TCK) tb_TMS<=1'b1;*/
+    #10 $finish ;
+    
+   end
+
+
+  endmodule
